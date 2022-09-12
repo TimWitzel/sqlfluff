@@ -267,16 +267,13 @@ sparksql_dialect.replace(
         OneOf(
             Ref("TransformClauseSegment"),
             Sequence(
-                Ref(
-                    "SelectClauseModifierSegment",
-                    optional=True,
-                ),
+                "SELECT",
+                Ref("SelectClauseModifierSegment", optional=True),
                 Indent,
                 Delimited(
-                    Ref("SelectClauseElementSegment"),
+                    Ref("WildcardExpressionSegment"),
                     allow_trailing=True,
-                ),
-            ),
+                ),),
         ),
         # NB: The Dedent for the indent above lives in the
         # SelectStatementSegment so that it sits in the right
@@ -2650,6 +2647,27 @@ class GeneratedColumnDefinitionSegment(BaseSegment):
     )
 
 
+class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
+    """An extension of the star expression for Databricks.""" 
+
+    match_grammar = ansi.WildcardExpressionSegment.match_grammar.copy( 
+        insert=[ 
+            # Optional EXCEPT clause 
+            # https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-qry-select.html
+            Ref("ExceptClauseSegment", optional=True), 
+        ] 
+    )
+
+class ExceptClauseSegment(BaseSegment):
+    """SELECT EXCEPT clause.""" 
+
+    type = "select_except_clause" 
+    match_grammar = Sequence( 
+        "EXCEPT", 
+        Bracketed(Delimited(Ref("SingleIdentifierGrammar"))), 
+    ) 
+
+
 class MergeUpdateClauseSegment(ansi.MergeUpdateClauseSegment):
     """`UPDATE` clause within the `MERGE` statement."""
 
@@ -2887,23 +2905,3 @@ class RestoreTableStatementSegment(BaseSegment):
             Ref("VersionAsOfGrammar"),
         ),
     )
-
-class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
-    """An extension of the star expression for Databricks.""" 
-
-    match_grammar = ansi.WildcardExpressionSegment.match_grammar.copy( 
-        insert=[ 
-            # Optional EXCEPT clause 
-            # https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-qry-select.html
-            Ref("ExceptClauseSegment", optional=True), 
-        ] 
-    )
-
-class ExceptClauseSegment(BaseSegment):
-    """SELECT EXCEPT clause.""" 
-
-    type = "select_except_clause" 
-    match_grammar = Sequence( 
-        "EXCEPT", 
-        Bracketed(Delimited(Ref("SingleIdentifierGrammar"))), 
-    ) 
