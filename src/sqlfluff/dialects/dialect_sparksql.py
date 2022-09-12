@@ -2895,11 +2895,11 @@ class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
         insert=[ 
             # Optional EXCEPT clause 
             # https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-qry-select.html
-            Ref("ExceptClause", optional=True), 
+            Ref("ExceptClauseSegment", optional=True), 
         ] 
     )
 
-class ExceptClause(BaseSegment):
+class ExceptClauseSegment(BaseSegment):
     """SELECT EXCEPT clause.""" 
 
     type = "select_except_clause" 
