@@ -2887,7 +2887,7 @@ class RestoreTableStatementSegment(BaseSegment):
             Ref("VersionAsOfGrammar"),
         ),
     )
- 
+
 class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
     """An extension of the star expression for Databricks.""" 
 
@@ -2895,12 +2895,11 @@ class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
         insert=[ 
             # Optional EXCEPT clause 
             # https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-qry-select.html
-            Ref("ExceptClauseSegment", optional=True), 
+            Ref("ExceptClause", optional=True), 
         ] 
-    ) 
-    
-  
-class ExceptClauseSegment(BaseSegment):
+    )
+
+class ExceptClause(BaseSegment):
     """SELECT EXCEPT clause.""" 
 
     type = "select_except_clause" 
