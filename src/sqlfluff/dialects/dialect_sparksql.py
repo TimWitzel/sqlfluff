@@ -2888,7 +2888,7 @@ class RestoreTableStatementSegment(BaseSegment):
         ),
     )
  
-class WildcardExpressionSegment(ansi.WildcardExpressionSegment): 
+class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
     """An extension of the star expression for Databricks.""" 
 
     match_grammar = ansi.WildcardExpressionSegment.match_grammar.copy( 
@@ -2898,9 +2898,9 @@ class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
             Ref("ExceptClauseSegment", optional=True), 
         ] 
     ) 
+    
   
-  
-class ExceptClauseSegment(BaseSegment): 
+class ExceptClauseSegment(BaseSegment):
     """SELECT EXCEPT clause.""" 
 
     type = "select_except_clause" 
