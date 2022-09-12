@@ -2900,7 +2900,7 @@ class WildcardExpressionSegment(ansi.WildcardExpressionSegment):
      ) 
   
   
- class ExceptClauseSegment(BaseSegment): 
+class ExceptClauseSegment(BaseSegment): 
      """SELECT EXCEPT clause.""" 
   
      type = "select_except_clause" 
